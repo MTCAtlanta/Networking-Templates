@@ -18,7 +18,7 @@
     },
     "vnetPrefix": {
       "type": "string",
-      "defaultValue": "10.1.0.0/16",
+      "defaultValue": "10.0.0.0/16",
       "metadata": {
         "description": "CIDR prefix for the VNet address space."
       }
@@ -32,7 +32,7 @@
     },
     "dmzSubnetPrefix": {
       "type": "string",
-      "defaultValue": "10.1.0.0/24",
+      "defaultValue": "10.0.0.0/24",
       "metadata": {
         "description": "CIDR address prefix for the DMZ subnet."
       }
@@ -46,7 +46,7 @@
     },
     "frontEndSubnetPrefix": {
       "type": "string",
-      "defaultValue": "10.1.1.0/24",
+      "defaultValue": "10.0.1.0/24",
       "metadata": {
         "description": "CIDR address prefix for the front end subnet."
       }
@@ -60,7 +60,7 @@
     },
     "backEndSubnetPrefix": {
       "type": "string",
-      "defaultValue": "10.1.2.0/24",
+      "defaultValue": "10.0.2.0/24",
       "metadata": {
         "description": "CIDR address prefix for the back end subnet."
       }
