@@ -8,44 +8,32 @@
         "description": "Relative DNS name for the traffic manager profile, resulting FQDN will be <uniqueDnsName>.trafficmanager.net, must be globally unique."
       }
     },
-    "uniqueDnsNameForPublicIP": {
-      "type": "string",
-      "metadata": {
-        "description": "Relative DNS Name for the Public IPs used to access the Virtual Machines, must be globally unique.  An index will be appended for each instance."
-      }
-    },
     "externalDNSNameOne": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "External endpoint for first website."
+        "description": "External DNS name for first website."
       }
     },
     "externalDNSNameTwo": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "External endpoint for second website."
+        "description": "External DNS name for second website."
       }
     }
   },
 
   "variables": {
-    "tmApiVersion": "2015-04-28-preview",
-    "apiVersion": "2015-05-01-preview",
-    "imagePublisher": "Canonical",
-    "publicIPAddressName": "myPublicIP",
-    "publicIPAddressType": "Dynamic"
+    "tmApiVersion": "2015-04-28-preview"
   },
 
   "resources": [
     {
       "apiVersion": "[variables('tmApiVersion')]",
       "type": "Microsoft.Network/trafficManagerProfiles",
-      "name": "VMEndpointExample",
+      "name": "ExternalEndpointExample",
       "location": "global",
-      "dependsOn": [
-      ],
       "properties": {
         "profileStatus": "Enabled",
         "trafficRoutingMethod": "Weighted",
@@ -60,21 +48,21 @@
         },
         "endpoints": [
           {
-            "name": "endpoint0",
-            "type": "Microsoft.Network/trafficManagerProfiles/externalEndpoints",
+            "name": "endpoint1",
+            "type": "Microsoft.Network/TrafficManagerProfiles/ExternalEndpoints",
             "properties": {
-              "targetResourceId": "[parameters('externalDNSNameOne')]",
+              "target": "[parameters('externalDNSNameOne')]",
               "endpointStatus": "Enabled",
-              "weight": 1
+              "weight": "1"
             }
           },
           {
-            "name": "endpoint1",
-            "type": "Microsoft.Network/trafficManagerProfiles/externalEndpoints",
+            "name": "endpoint2",
+            "type": "Microsoft.Network/TrafficManagerProfiles/ExternalEndpoints",
             "properties": {
               "target": "[parameters('externalDNSNameTwo')]",
               "endpointStatus": "Enabled",
-              "weight": 1
+              "weight": "1"
             }
           }
         ]
