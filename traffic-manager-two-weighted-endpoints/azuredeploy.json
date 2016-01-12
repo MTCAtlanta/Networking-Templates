@@ -67,7 +67,7 @@
         "endpoints": [
           {
             "name": "endpoint0",
-            "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+            "type": "Microsoft.Network/trafficManagerProfiles/externalEndpoints",
             "properties": {
               "targetResourceId": "[parameters('externalIPOne')]",
               "endpointStatus": "Enabled",
@@ -76,9 +76,9 @@
           },
           {
             "name": "endpoint1",
-            "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+            "type": "Microsoft.Network/trafficManagerProfiles/externalEndpoints",
             "properties": {
-              "targetResourceId": "[parameters('externalIPTwo')]",
+              "target": "[parameters('externalIPTwo')]",
               "endpointStatus": "Enabled",
               "weight": 1
             }

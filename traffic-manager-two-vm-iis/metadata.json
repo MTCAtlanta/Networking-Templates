@@ -1,7 +1,0 @@
-{
-  "itemDisplayName": "Creates two Linux Apache web VMs and load balances them behind Traffic Manager.",
-  "description": "Creates two Linux Apache web VMs and load balances them behind Traffic Manager. This script allows you to specify what networks and subnets are used for the deployment.",
-  "summary": "Create two Apache VMs in subnets of your choosing.",
-  "githubUsername": "albertwo1978",
-  "dateUpdated": "2016-01-12"
-}
