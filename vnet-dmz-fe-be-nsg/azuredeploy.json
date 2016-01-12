@@ -1,0 +1,163 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "CorpITNet",
+      "metadata": {
+        "description": "Name for the new VNet."
+      }
+    },
+    "vnetLocation": {
+      "type": "string",
+      "defaultValue": "Central US",
+      "metadata": {
+        "description": "Location for the new VNet."
+      }
+    },
+    "vnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16",
+      "metadata": {
+        "description": "CIDR prefix for the VNet address space."
+      }
+    },
+    "dmzSubnetName": {
+      "type": "string",
+      "defaultValue": "DMZ",
+      "metadata": {
+        "description": "Name for the DMZ subnet."
+      }
+    },
+    "dmzSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24",
+      "metadata": {
+        "description": "CIDR address prefix for the DMZ subnet."
+      }
+    },
+    "frontEndSubnetName": {
+      "type": "string",
+      "defaultValue": "FrontEnd",
+      "metadata": {
+        "description": "Name for the front end subnet."
+      }
+    },
+    "frontEndSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.1.0/24",
+      "metadata": {
+        "description": "CIDR address prefix for the front end subnet."
+      }
+    },
+    "backEndSubnetName": {
+      "type": "string",
+      "defaultValue": "BackEnd",
+      "metadata": {
+        "description": "Name for the back end subnet."
+      }
+    },
+    "backEndSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.2.0/24",
+      "metadata": {
+        "description": "CIDR address prefix for the back end subnet."
+      }
+    },
+    "FrontEndNSG": {
+      "type": "string",
+      "defaultValue": "FrontEndNSG",
+      "metadata": {
+        "description": "Policies: Allow RDP, HTTP and block Internet."
+      }
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('FrontEndNSG')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "CorpIT": "NSG"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "rdp-rule",
+            "properties": {
+              "description": "Allow RDP",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "http-rule",
+            "properties": {
+              "description": "Allow HTTP",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[parameters('vnetName')]",
+      "location": "[parameters('vnetLocation')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('FrontEndNSG'))]"
+      ],
+      "tags": {
+        "CorpIT": "VNET"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('dmzSubnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('dmzSubnetPrefix')]"
+            }
+          },
+          {
+            "name": "[parameters('frontEndSubnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('frontEndSubnetPrefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('FrontEndNSG'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('backEndSubnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('backEndSubnetPrefix')]"
+            }
+          }
+        ]
+      }
+    }
+  ]
+  }
