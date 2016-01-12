@@ -8,26 +8,20 @@
         "description": "Relative DNS name for the traffic manager profile, resulting FQDN will be <uniqueDnsName>.trafficmanager.net, must be globally unique."
       }
     },
-    "uniqueStorageAccountName": {
-      "type": "string",
-      "metadata": {
-        "description": "Relative DNS Name for the Storage Account where the Virtual Machine's disks will be placed, must be globally unique."
-      }
-    },
     "uniqueDnsNameForPublicIP": {
       "type": "string",
       "metadata": {
         "description": "Relative DNS Name for the Public IPs used to access the Virtual Machines, must be globally unique.  An index will be appended for each instance."
       }
     },
-    "externalIPOne": {
+    "externalDNSNameOne": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "External endpoint for first website."
       }
     },
-    "externalIPTwo": {
+    "externalDNSNameTwo": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -69,7 +63,7 @@
             "name": "endpoint0",
             "type": "Microsoft.Network/trafficManagerProfiles/externalEndpoints",
             "properties": {
-              "targetResourceId": "[parameters('externalIPOne')]",
+              "targetResourceId": "[parameters('externalDNSNameOne')]",
               "endpointStatus": "Enabled",
               "weight": 1
             }
@@ -78,7 +72,7 @@
             "name": "endpoint1",
             "type": "Microsoft.Network/trafficManagerProfiles/externalEndpoints",
             "properties": {
-              "target": "[parameters('externalIPTwo')]",
+              "target": "[parameters('externalDNSNameTwo')]",
               "endpointStatus": "Enabled",
               "weight": 1
             }
